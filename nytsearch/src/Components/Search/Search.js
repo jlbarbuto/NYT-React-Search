@@ -1,6 +1,9 @@
 import React from "react";
 import "./Search.css";
 
+//make this the app.js file b/c there aren't multiple pages??? 
+//make app.js the only statefull component? or something that gets rendered in app.js
+
 class Search extends Component {
 
   state = {
