@@ -3,7 +3,7 @@ import './App.css';
 import Header from "./Components/Header/Header";
 // import Search from "./Pages/Search/Search";
 // import Result from "./Pages/Results/Results";
-import Nytimes from './Components/Nytimes';
+import Search from './Pages/Search/Search';
 
 class App extends Component {
 
@@ -11,7 +11,7 @@ class App extends Component {
     return (
       <div className="App">
         <Header />
-        <Nytimes />
+        <Search />
       </div>
     );
   }

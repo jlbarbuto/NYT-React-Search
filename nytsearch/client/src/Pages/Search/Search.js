@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import "./Search.css";
-import ArticleCard from "../../Components/ArticleCard/ArticleCard";
+import SearchResults from "../../Components/SearchResults/SearchResults";
+import axios from 'axios';
+import SearchForm from "../../Components/SearchForm/SearchForm";
 
-//make this the app.js file b/c there aren't multiple pages??? 
-//make app.js the only statefull component? or something that gets rendered in app.js
+const API_KEY = process.env.REACT_APP_NYT_KEY;
+// const API_KEY = "e3e9bfd052284f8c86b6c5dbd5f9a1ed";
 
 class Search extends Component {
 
@@ -11,26 +13,7 @@ class Search extends Component {
     topic: "",
     startYear: "",
     endYear: "",
-    results: [
-      {
-        id: 1,
-        title: "this is an article title",
-        url: "www.articleurl.com",
-        date: "2017-04-23T00:00:00Z"
-      },
-      {
-        id: 2,
-        title: "this is an article title",
-        url: "www.articleurl.com",
-        date: "2017-04-23T00:00:00Z"
-      },
-      {
-        id: 3,
-        title: "this is an article title",
-        url: "www.articleurl.com",
-        date: "2017-04-23T00:00:00Z"
-      }
-    ]
+    results: []
   };
 
   handleInputChange = event => {
@@ -41,83 +24,51 @@ class Search extends Component {
   };
 
   loadArticles = () => {
-    {this.state.results.map(result => (
-      <ArticleCard
-        key={result.id}
-        title={result.title}
-        url={result.url}
-        date={result.date}
-      />
-    ))
-  
-  }
+    axios.get("https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=" + API_KEY + "&q=dog&begin_date=20160101&end_date=20180101")
+      .then(res => {
+        console.log(res.data.response.docs);
+        this.setState({ results: res.data.response.docs});
+        console.log(this.state.results);
+      })
+      .catch(err => {
+        console.log(err);
+      })
+
+    // render() {
+    //   return (
+    //     {this.state.results.map(result => (
+    //       <ArticleCard
+    //         key={result.id}
+    //         headline={result.headline.main}
+    //         url={result.url}
+    //         date={result.date}
+    //       />
+    //     ))} 
+    //   ) 
+    // }
   };
 
   handleFormSubmit = event => {
     event.preventDefault();
     this.loadArticles();
+    console.log(this.state.results);
   }
-
-  // handleFormSubmit = event => {
-  //   event.preventDefault();
-  //   API.getArticles(this.state.search)
-  //     .then(res => {
-  //       if(res.data.status === "error"){
-  //         throw new Error(res.data.message);
-  //       }
-  //       this.setState({results: res.data.message, error: ""});
-  //     })
-  //     .catch(err => this.setState({ error: err.message }));
-  // };
 
   render() {
     return (
       <div className="container">
-        <form className="search">
-          <div className="form-group">
-            <label htmlFor="topic">Topic:</label>
-            <input
-              value={this.state.topic}
-              onChange={this.handleInputChange}
-              name="topic"
-              type="text"
-              className="form-control"
-              placeholder="Enter a topic of interest"
-            />
-            <br />
-            <br />
-            <label htmlFor="startYear">Start Year:</label>
-            <input
-              value={this.state.startYear}
-              onChange={this.handleInputChange}
-              name="startYear"
-              type="text"
-              className="form-control"
-              placeholder="Enter a startYear of interest"
-            />
-            <br />
-            <br />
-            <label htmlFor="endYear">End Year:</label>
-            <input
-              value={this.state.endYear}
-              onChange={this.handleInputChange}
-              name="endYear"
-              type="text"
-              className="form-control"
-              placeholder="Enter a endYear of interest"
-            />
-            <br />
-            <br />
-            <button
-              type="submit"
-              onClick={this.handleFormSubmit}
-              className="btn btn-success"
-            >
-              Search
-            </button>
-            <div>{this.loadArticles()}</div>
-          </div>
-        </form>
+        <SearchForm
+          handleFormSubmit={this.handleFormSubmit}
+          handleInputChange={this.handleInputChange}
+          topic={this.state.topic}
+          startYear={this.state.startYear}
+          endYear={this.state.endYear}
+        />
+        {this.state.results.length ? (
+          <SearchResults results={this.state.results} />
+        ) : (
+          <h2>No Artilces yet!</h2>
+        )}
       </div>
     );
   }
