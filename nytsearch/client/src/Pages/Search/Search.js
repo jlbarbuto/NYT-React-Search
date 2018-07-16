@@ -47,7 +47,8 @@ class Search extends Component {
 
   handleFormSubmit = event => {
     event.preventDefault();
-    axios.get("https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=" + API_KEY + "&q=dog&begin_date=20160101&end_date=20180101")
+    const url = `https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=${API_KEY}&q=${this.state.topic}&begin_date=${this.state.startYear}0101&end_date=${this.state.endYear}0101`;
+    axios.get(url)
     .then(res => {
       console.log(res.data.response.docs);
       this.setState({ results: res.data.response.docs});
