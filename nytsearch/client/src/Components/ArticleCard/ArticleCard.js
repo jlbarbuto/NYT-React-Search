@@ -1,6 +1,6 @@
 import React from "react";
 
-const ArticleCard = props => {
+const ArticleCard = props => (
   <div className="card">
     <div className="card-body">
       <h5 className="card-title">{props.headline}</h5>
@@ -9,6 +9,6 @@ const ArticleCard = props => {
       <button className="btn btn-primary">Save</button>
     </div>
   </div>
-};
+);
 
 export default ArticleCard;

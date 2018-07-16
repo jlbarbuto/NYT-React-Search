@@ -3,9 +3,10 @@ import "./Search.css";
 import SearchResults from "../../Components/SearchResults/SearchResults";
 import axios from 'axios';
 import SearchForm from "../../Components/SearchForm/SearchForm";
+// import ArticleCard from "../../Components/ArticleCard/ArticleCard";
 
-const API_KEY = process.env.REACT_APP_NYT_KEY;
-// const API_KEY = "e3e9bfd052284f8c86b6c5dbd5f9a1ed";
+// const API_KEY = process.env.REACT_APP_NYT_KEY;
+const API_KEY = "e3e9bfd052284f8c86b6c5dbd5f9a1ed";
 
 class Search extends Component {
 
@@ -23,36 +24,40 @@ class Search extends Component {
     });
   };
 
-  loadArticles = () => {
-    axios.get("https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=" + API_KEY + "&q=dog&begin_date=20160101&end_date=20180101")
-      .then(res => {
-        console.log(res.data.response.docs);
-        this.setState({ results: res.data.response.docs});
-        console.log(this.state.results);
-      })
-      .catch(err => {
-        console.log(err);
-      })
+  // loadArticles = () => {
+  //   // axios.get("https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=" + API_KEY + "&q=dog&begin_date=20160101&end_date=20180101")
+  //   //   .then(res => {
+  //   //     console.log(res.data.response.docs);
+  //   //     this.setState({ results: res.data.response.docs});
+  //   //     console.log(this.state.results);
+  //   //   })
+  //   //   .catch(err => {
+  //   //     console.log(err);
+  //   //   })
 
-    // render() {
-    //   return (
-    //     {this.state.results.map(result => (
-    //       <ArticleCard
-    //         key={result.id}
-    //         headline={result.headline.main}
-    //         url={result.url}
-    //         date={result.date}
-    //       />
-    //     ))} 
-    //   ) 
-    // }
-  };
+  //   return this.state.results.map(result => (
+  //     <ArticleCard
+  //       key={result.id}
+  //       headline={result.headline.main}
+  //       url={result.url}
+  //       date={result.date}
+  //     />
+  //   ))
+  // };
 
   handleFormSubmit = event => {
     event.preventDefault();
-    this.loadArticles();
+    axios.get("https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=" + API_KEY + "&q=dog&begin_date=20160101&end_date=20180101")
+    .then(res => {
+      console.log(res.data.response.docs);
+      this.setState({ results: res.data.response.docs});
+      console.log(this.state.results);
+    })
+    .catch(err => {
+      console.log(err);
+    })
     console.log(this.state.results);
-  }
+  };
 
   render() {
     return (
