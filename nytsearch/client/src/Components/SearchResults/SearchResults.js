@@ -1,5 +1,4 @@
 import React from 'react';
-import ArticleCard from '../ArticleCard/ArticleCard';
 
 const SearchResults = props => (
   <div>
@@ -12,7 +11,7 @@ const SearchResults = props => (
               <h5 className="card-title">{result.headline.main}</h5>
               <p className="card-text">{result.web_url}</p>
               <p className="card-text">{result.pub_date}</p>
-              <button className="btn btn-primary">Save</button>
+              <button className="btn btn-primary" onClick={props.handleSave}>Save</button>
             </div>
           </div>
         </li>
